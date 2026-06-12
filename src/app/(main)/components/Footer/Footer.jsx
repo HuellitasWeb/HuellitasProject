@@ -111,7 +111,7 @@ function Footer() {
         <div className="flex fixed inset-0 w-full h-full bg-black bg-opacity-50 backdrop-blur-sm z-50">
           <div className="flex fixed inset-0 max-w-screen-2xl mx-auto justify-center items-center gap-8 z-50" role="section">
             <div className="flex flex-col w-[90%] md:w-[70%] lg:w-[50%] gap-6 p-6 lg:p-10 bg-white rounded-3xl shadow-lg relative overflow-hidden overflow-y-auto no-scrollbar">
-              <h1 className="heading-1">EQUIPO DE DESARROLLO</h1>
+              <h2 className="heading-1">EQUIPO DE DESARROLLO</h2>
 
               <div className="flex flex-col md:flex-row w-full justify-center items-start">
                 <div className="flex flex-col w-[100%] md:w-[50%] gap-8">

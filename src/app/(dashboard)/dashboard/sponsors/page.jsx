@@ -1,37 +1,24 @@
 "use client";
 
-
-import { useState, useEffect } from "react";
 import Table from "../components/Table/Table";
+import useCollection from "@/hooks/useCollection";
 
 function Sponsors() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const [data, setData] = useState(null);
-    const [refresh, refreshCallback] = useState(0); // Just to update the data from child components
+    const { data, error, mutate } = useCollection("sponsors");
 
-    async function getData() {
-        const res = await fetch(apiUrl + "/sponsors");
-        setData(await res.json());
+    if (error) {
+        return <div className="panel-alert">Ha ocurrido un error al cargar los sponsors.</div>;
     }
 
-    useEffect(() => {
-        getData();
-    }, [refresh]);
-
-    try {
-        return (
-            <div className="my-12">
-                <Table
-                    data={data}
-                    refreshCallback={refreshCallback}
-                    config={{ collection: "sponsors" }}
-                />
-            </div>
-        );
-    } catch (e) {
-        console.log(e);
-        return <h2>Ha ocurrido un error al cargar las historias.</h2>;
-    }
+    return (
+        <div className="my-12">
+            <Table
+                data={data}
+                refresh={mutate}
+                config={{ collection: "sponsors" }}
+            />
+        </div>
+    );
 }
 
 export default Sponsors;

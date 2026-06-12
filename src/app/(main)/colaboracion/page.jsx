@@ -56,9 +56,8 @@ function Colaboracion() {
 
     const [itemsColab, setItemsColab] = useState(null);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     async function setData() {
-        const res = await fetch(apiUrl + "/sponsors");
+        const res = await fetch("/api/sponsors");
         setItemsColab(await res.json());
     }
 

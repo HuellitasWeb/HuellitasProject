@@ -1,37 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Table from "../components/Table/Table";
+import useCollection from "@/hooks/useCollection";
 
 function Users() {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const [data, setData] = useState(null);
-    const [refresh, refreshCallback] = useState(0); // Just to update the data from child components
+    const { data, error, mutate } = useCollection("admins");
 
-    async function getData() {
-        const res = await fetch(apiUrl + "/admins", { cache: "no-cache" });
-        const users = await res.json();
-        setData(users);
+    if (error) {
+        return <div className="panel-alert">Ha ocurrido un error al cargar los usuarios.</div>;
     }
 
-    useEffect(() => {
-        getData();
-    }, [refresh]);
-
-    try {
-        return (
-            <div className="my-12">
-                <Table
-                    data={data}
-                    refreshCallback={refreshCallback}
-                    config={{ collection: "admins" }}
-                />
-            </div>
-        );
-    } catch (e) {
-        console.log(e);
-        return <h2>Ha ocurrido un error al cargar las historias.</h2>;
-    }
+    return (
+        <div className="my-12">
+            <Table
+                data={data}
+                refresh={mutate}
+                config={{ collection: "admins" }}
+            />
+        </div>
+    );
 }
 
 export default Users;

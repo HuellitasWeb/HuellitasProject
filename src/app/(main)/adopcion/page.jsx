@@ -4,7 +4,11 @@ import CardWrapper from "./components/CardWrapper/CardWrapper";
 export const metadata = {
     title: 'Adopción | Huellitas Cartagena',
     description: 'Explora nuestra página de adopción para conocer a los animales que esperan encontrar una familia. Revisa los perfiles de nuestros adorables refugiaditos y consulta nuestra sección de preguntas frecuentes para obtener toda la información necesaria sobre el proceso de adopción. Tu próximo compañero de vida podría estar aquí esperando por ti.',
+    alternates: { canonical: '/adopcion' },
 }
+
+// Las adopciones se leen de Firestore en el servidor; ISR de 5 minutos.
+export const revalidate = 300;
 
 let faq = [
     {

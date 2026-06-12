@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useContext, useEffect } from "react";
-import { logIn } from "@/services/user.services";
+import { useState, useContext } from "react";
 import { AdminContext } from "@/components/AdminProvider";
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
     const [remember, setRemember] = useState(false);
     const [showNoUserMessage, setShowNoUserMessage] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const { updateUser, user } = useContext(AdminContext);
+    const { updateUser } = useContext(AdminContext);
     const router = useRouter()
 
     function handleSubmit(e) {
@@ -17,39 +16,31 @@ function LoginForm() {
         handleLogIng(e.target.email.value, e.target.password.value);
     }
 
-    async function handleLogIng(email, pass) {
+    async function handleLogIng(email, password) {
         try {
-            const user = await logIn(email, pass);
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-            if (user) {
-                saveUser(user);
-                router.push('/dashboard')
-            } else {
+            if (!res.ok) {
                 setShowNoUserMessage(true);
+                return;
             }
-        } catch (e) {
-            console.log(e);
-            setShowNoUserMessage(true);
-        }
-    }
 
-    function saveUser(user) {
-        try {
+            const user = await res.json();
             updateUser(user);
-            sessionStorage.setItem("user", JSON.stringify(user));
+            router.push('/dashboard')
         } catch (e) {
-            console.log(e);
+            console.error(e);
+            setShowNoUserMessage(true);
         }
     }
 
     function handleShowPassword() {
         setShowPassword(!showPassword);
     }
-    useEffect(()=>{
-        if(user){
-            redirect('/dashboard')
-        }
-    },[])
 
     return (
         <form

@@ -1,7 +1,8 @@
+import { AdminProvider } from "@/components/AdminProvider";
 
 function layout({ children }) {
     return (
-        <body>
+        <AdminProvider>
             {children}
             <footer className="flex bg-[#585564] h-14 justify-center items-center">
                 Diseño y Programación:
@@ -13,7 +14,7 @@ function layout({ children }) {
                     InkuA
                 </a>
             </footer>
-        </body>
+        </AdminProvider>
     )
 }
 

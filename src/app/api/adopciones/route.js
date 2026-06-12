@@ -4,8 +4,9 @@ import {
     addElement,
     putElement,
     delElement,
-    delImage,
 } from "../../../services/services";
+import { deleteImage } from "@/services/crabStorage";
+import { verifySession } from "@/lib/auth";
 
 export async function GET() {
     try {
@@ -17,41 +18,55 @@ export async function GET() {
 }
 
 export async function POST(req) {
-    try {
-        const { token, data } = await req.json();
-        // Use token to validate request
+    const session = await verifySession(req);
+    if (!session) {
+        return Response.json({ error: "No autorizado" }, { status: 401 });
+    }
 
+    try {
+        const { data } = await req.json();
         const res = await addElement(data, "adopciones");
         return Response.json({ status: 200, data: res });
     } catch (e) {
-        console.log(e);
-        return Response.json({ status: 403, data: e });
+        console.error(e);
+        return Response.json({ error: "Error interno" }, { status: 500 });
     }
 }
 
 export async function PUT(req) {
-    try {
-        const { token, id, data } = await req.json();
-        // Use token to validate request
+    const session = await verifySession(req);
+    if (!session) {
+        return Response.json({ error: "No autorizado" }, { status: 401 });
+    }
 
+    try {
+        const { id, data, oldImageUrl } = await req.json();
         const res = await putElement(data, id, "adopciones");
+
+        if (oldImageUrl && data?.imagen && oldImageUrl !== data.imagen) {
+            await deleteImage(oldImageUrl);
+        }
+
         return Response.json({ status: 200, data: res });
     } catch (e) {
-        console.log(e);
-        return Response.json({ status: 403, data: e });
+        console.error(e);
+        return Response.json({ error: "Error interno" }, { status: 500 });
     }
 }
 
 export async function DELETE(req) {
-    try {
-        const { token, item } = await req.json();
-        // Use token to validate request
+    const session = await verifySession(req);
+    if (!session) {
+        return Response.json({ error: "No autorizado" }, { status: 401 });
+    }
 
+    try {
+        const { item } = await req.json();
         const res = await delElement(item.id, "adopciones");
-        await delImage(item.data.imagen);
+        await deleteImage(item.data.imagen);
         return Response.json({ status: 200, data: res });
     } catch (e) {
-        console.log(e);
-        return Response.json({ status: 403, data: e });
+        console.error(e);
+        return Response.json({ error: "Error interno" }, { status: 500 });
     }
 }

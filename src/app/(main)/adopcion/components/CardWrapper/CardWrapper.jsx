@@ -1,20 +1,16 @@
-"use client";
-
 import Card from "../Card/Card";
-import { useEffect, useState } from "react";
+import { getRef, formatData } from "@/services/services";
 
-export default function CardWrapper() {
-    const [animals, setAnimals] = useState(null);
-
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    async function setData() {
-        const res = await fetch(apiUrl + "/adopciones");
-        setAnimals(await res.json());
+// Server Component: los animales en adopción llegan en el HTML inicial
+// (indexable por crawlers) en lugar de cargarse con fetch en el cliente.
+export default async function CardWrapper() {
+    let animals = null;
+    try {
+        const ref = await getRef("adopciones");
+        animals = ref ? formatData(ref) : null;
+    } catch (e) {
+        console.error("CardWrapper: no se pudieron leer las adopciones", e);
     }
-
-    useEffect(() => {
-        setData();
-    }, []);
 
     return (
         <>

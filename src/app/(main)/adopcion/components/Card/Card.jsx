@@ -19,11 +19,11 @@ function Card({ name, age, source, characteristics, gender, story, type }) {
                         className="absolute w-full h-full flex object-cover"
                     />
                 </div>
-                <h1 className="text-center uppercase par-3 md:par-2 !font-semibold text-nowrap">
+                <h3 className="text-center uppercase par-3 md:par-2 !font-semibold text-nowrap">
                     <span>{name + " - "}</span>
                     <span className="hidden lg:inline-block">{(gender ? " MACHO" : "HEMBRA") + " - "}</span>
                     <span>{" " + age + (type == 0 ? (age != 1 ? " años" : " año") : age != 1 ? " meses" : " mes")}</span>
-                </h1>
+                </h3>
                 <button type="button" onClick={() => setInfo(!info)} className="w-full primary-btn">
                     SABER MÁS
                 </button>
@@ -53,13 +53,13 @@ function Card({ name, age, source, characteristics, gender, story, type }) {
                             </div>
 
                             <div className="flex h-full flex-col justify-between gap-4" role="list">
-                                <h1 className="font-bold heading-2 uppercase">{name}</h1>
-                                <h1 className="!font-bold par-1">
+                                <h2 className="font-bold heading-2 uppercase">{name}</h2>
+                                <p className="!font-bold par-1">
                                     Edad:{" "}
                                     <span className="par-1">
                                         {" " + age + (type == 0 ? (age != 1 ? " años" : " año") : (age != 1 ? ' meses' : ' mes'))}
                                     </span>
-                                </h1>
+                                </p>
                                 <p className="!font-bold par-1">
                                     Caracteristicas:{" "}
                                     <span className="par-1">
