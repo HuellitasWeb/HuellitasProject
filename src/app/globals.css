@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,17 +49,8 @@ body {
     }
 }
 
-@layer base {
-    html {
-        font-family: "Poppins", sans-serif;
-    }
-}
-
-@layer base {
-    html {
-        font-family: "Poppins", sans-serif;
-    }
-}
+/* La fuente Poppins se carga con next/font en src/app/layout.jsx
+   (clase aplicada al <html>), sin @import render-blocking. */
 
 .heading-1 {
     @apply text-h1-m lg:text-h1-w md:text-h1-w text-primaryFont;
@@ -94,34 +84,46 @@ body {
     @apply uppercase text-p3-m lg:text-p3-w md:text-p3-w px-4 py-4 lg:py-1 md:py-1 font-medium text-black hover:bg-gray-100 rounded-full transition-all duration-150 active:bg-gray-200;
 }
 
-/* Estilos de editor de textos */
+/* Estilos de editor de textos (Tiptap) */
 
-.public-DraftStyleDefault-block {
-    margin: 0;
-}
-
-.public-DraftStyleDefault-block.header-one {
+.tiptap h1 {
     font-size: 2em;
     font-weight: bold;
-    margin: 0.67em 0;
+    margin: 0.4em 0 0.2em;
 }
 
-.public-DraftStyleDefault-block.header-two {
+.tiptap h2 {
     font-size: 1.5em;
     font-weight: bold;
-    margin: 0.75em 0;
+    margin: 0.4em 0 0.2em;
 }
 
-.public-DraftStyleDefault-block.header-three {
-    font-size: 1.17em;
-    font-weight: bold;
-    margin: 0.83em 0;
+.tiptap blockquote {
+    border-left: 5px solid #ddd;
+    color: #555;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    margin: 16px 0;
+    padding: 10px 20px;
 }
 
-.public-DraftStyleDefault-block.header-four {
-    font-size: 1em;
-    font-weight: bold;
-    margin: 1.12em 0;
+.tiptap ul {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+.tiptap ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+
+/* Tiptap envuelve el contenido de cada <li> en un <p> (bloque): sin esto el
+   marcador queda en una línea y el texto debajo. Los artículos antiguos
+   (draft-js, <li>texto</li> sin <p>) no tienen este <p> y quedan intactos. */
+.tiptap li p,
+#blogArticle li p {
+    display: inline;
+    margin: 0;
 }
 
 @layer base {
@@ -136,17 +138,6 @@ body {
         font-weight: revert;
     }
 }
-
-/* editor de texto */
-.blockquote .public-DraftStyleDefault-block  {
-    border-left: 5px solid #ddd !important;
-    color: #555 !important;
-    font-family: 'Georgia', serif;
-    font-style: italic;
-    margin: 16px 0;
-    padding: 10px 20px;
-}
-
 
 /* articulo del blog */
 #blogArticle{
@@ -201,4 +192,39 @@ body {
         font-size: 20px;
         padding-left: 18px;
     }
+}
+
+/* ===== Panel administrativo — sistema de componentes ===== */
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primaryColor/40 disabled:opacity-60 disabled:cursor-not-allowed;
+    }
+    .btn-primary { @apply btn text-white bg-primaryColor hover:bg-secondaryColor active:bg-activeButton; }
+    .btn-outline { @apply btn text-primaryColor border border-primaryColor hover:bg-primaryColor hover:text-white; }
+    .btn-ghost   { @apply btn text-grayFont hover:bg-primaryColor/10 hover:text-primaryColor; }
+    .btn-danger  { @apply btn text-red-600 hover:bg-red-50; }
+    .btn-sm      { @apply px-3 py-1.5 text-xs; }
+
+    .field-label { @apply block mb-1.5 text-sm font-medium text-grayFont; }
+    .field-input { @apply block w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-primaryFont placeholder:text-gray-400 transition-colors focus:outline-none focus:border-primaryColor focus:ring-2 focus:ring-primaryColor/30; }
+    .field-error { @apply mt-1 text-xs text-red-600; }
+
+    .modal-overlay { @apply fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 bg-primaryFont/30 backdrop-blur-sm; }
+    .modal-card    { @apply relative w-full max-h-[calc(100vh-2rem)] overflow-y-auto rounded-2xl border border-primaryColor/15 bg-white shadow-xl; }
+    .modal-header  { @apply sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-primaryColor/15 bg-tertiaryColor px-6 py-4; }
+    .modal-title   { @apply text-lg font-semibold text-primaryFont; }
+    .modal-body    { @apply px-6 py-5; }
+    .modal-close   { @apply inline-flex h-8 w-8 items-center justify-center rounded-lg text-grayFont transition-colors hover:bg-primaryColor/10 hover:text-primaryColor; }
+
+    .admin-table          { @apply w-full text-left text-sm text-grayFont; }
+    .admin-table thead    { @apply bg-primaryColor text-xs uppercase tracking-wide text-tertiaryColor; }
+    .admin-table thead th { @apply px-6 py-3; }
+    .admin-table tbody td,
+    .admin-table tbody th { @apply px-6 py-4 align-middle; }
+    .admin-table tbody tr { @apply border-b border-gray-100 bg-white transition-colors odd:bg-primaryColor/5 hover:bg-primaryColor/10; }
+
+    .nav-link        { @apply rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-white/10; }
+    .nav-link-active { @apply bg-white/15 font-semibold; }
+
+    .panel-alert { @apply flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700; }
 }

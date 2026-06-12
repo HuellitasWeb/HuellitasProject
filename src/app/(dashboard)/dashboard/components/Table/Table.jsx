@@ -3,18 +3,18 @@
 import styles from "@/app/(main)/components/styles/loading.module.css"
 
 import { useState } from "react";
-import ModalAdd from "./Modals/ModalAdd";
-import ModalMod from "./Modals/ModalMod";
+import EntityForm from "./Modals/EntityForm";
 import StoriesModal from "../StoriesModal/StoriesModal";
 
 import { successMessage, errorMessage } from "@/services/notify";
 
-function Table({ data, refreshCallback, config, stories = false }) {
+function Table({ data, refresh, config, stories = false }) {
     const [isModalAddActive, setIsModalAddActive] = useState(false);
     const [isModalModActive, setIsModalModActive] = useState(false);
     const [storiesModalAdd, setStoriesModalAdd] = useState(false);
     const [storiesModalMod, setStoriesModalMod] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [busyId, setBusyId] = useState(null);
 
     function handleModify(item) {
         if (stories) {
@@ -32,38 +32,38 @@ function Table({ data, refreshCallback, config, stories = false }) {
     function handleModalModClose() {
         setIsModalModActive(false);
         setSelectedItem(null);
-        refreshCallback(Date.now());
+        refresh();
     }
 
     function handleModalAddClose() {
         setIsModalAddActive(false);
-        refreshCallback(Date.now());
+        refresh();
     }
 
     async function handleRemove(item) {
-        try {
-            const htmlTag = document.getElementsByTagName("html")[0];
-            htmlTag.classList.add("!cursor-wait");
-            htmlTag.classList.add("pointer-events-none");
+        if (!window.confirm(`¿Eliminar "${item.data.nombre}"? Esta acción no se puede deshacer.`)) {
+            return;
+        }
 
-            await fetch("/api/" + config.collection, {
+        setBusyId(item.id);
+        try {
+            const res = await fetch("/api/" + config.collection, {
                 method: "DELETE",
-                body: JSON.stringify({
-                    token: "",
-                    item: item,
-                }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ item }),
             });
 
-            successMessage('Operación exitosa!')
-            htmlTag.classList.remove("!cursor-wait");
-            htmlTag.classList.remove("pointer-events-none");
+            if (!res.ok) {
+                throw new Error("La operación falló");
+            }
 
-            refreshCallback(Date.now());
+            successMessage('Operación exitosa!')
+            refresh();
         } catch (error) {
             errorMessage('Algo salió mal, intente más tarde')
-            console.log(e);
-            htmlTag.classList.remove("!cursor-wait");
-            htmlTag.classList.remove("pointer-events-none");
+            console.error(error);
+        } finally {
+            setBusyId(null);
         }
     }
 
@@ -74,7 +74,7 @@ function Table({ data, refreshCallback, config, stories = false }) {
                     <button
                         onClick={() => setStoriesModalAdd(true)}
                         type="button"
-                        className="bg-primaryColor px-4 py-2 rounded-md my-4"
+                        className="btn-primary my-4"
                     >
                         Añadir
                     </button>
@@ -82,13 +82,13 @@ function Table({ data, refreshCallback, config, stories = false }) {
                     <button
                         onClick={handleCreate}
                         type="button"
-                        className="bg-primaryColor px-4 py-2 rounded-md my-4"
+                        className="btn-primary my-4"
                     >
                         Añadir
                     </button>
                 )}
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs md:text-ms h-14 text-tertiaryColor bg-primaryColor">
+                <table className="admin-table">
+                    <thead>
                         <tr>
                             <th scope="col" className="px-6 py-3">
                                 Nombre
@@ -131,54 +131,54 @@ function Table({ data, refreshCallback, config, stories = false }) {
                                 return (
                                     <tr
                                         key={item.id}
-                                        className="bg-white border-b h-32 odd:bg-[#6c5ce71d]"
+                                        className="h-32"
                                     >
                                         <th
                                             scope="row"
-                                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                                            className="font-medium text-primaryFont whitespace-nowrap"
                                         >
                                             {item.data.nombre}
                                         </th>
 
                                         {/* Fields only for admins page */}
                                         {config.collection == "admins" && (
-                                            <td className="flex items-center whitespace-nowrap px-6 py-4 h-32 max-w-60 overflow-scroll">
+                                            <td className="whitespace-nowrap max-w-60 overflow-auto">
                                                 {item.data.email}
                                             </td>
                                         )}
 
                                         {/* Fields only for adoptions page */}
                                         {config.collection == "adopciones" && (
-                                            <td className="flex items-center whitespace-nowrap px-6 py-4 h-32 max-w-60 overflow-scroll">
+                                            <td className="whitespace-nowrap max-w-60 overflow-auto">
                                                 {item.data.caracteristicas}
                                             </td>
                                         )}
 
                                         {/* Fields only for stories page */}
                                         {config.collection == "historias" && (
-                                            <td className="flex items-center whitespace-nowrap px-6 py-4 h-32 max-w-60 overflow-scroll">
+                                            <td className="whitespace-nowrap max-w-60 overflow-auto">
                                                 {item.data.entradilla}
                                             </td>
                                         )}
 
                                         {/* Fields for all pages except admins */}
                                         {config.collection != "admins" && (
-                                            <td className="px-6 min-w-[10rem] py-2">
+                                            <td className="min-w-[10rem]">
                                                 <img
-                                                    className="h-24"
+                                                    className="h-24 w-24 object-cover rounded-lg"
                                                     src={item.data.imagen}
                                                     alt="Imagen de un perrito"
                                                 />
                                             </td>
                                         )}
 
-                                        <td className="px-6 py-4 text-right min-w-[15rem]">
+                                        <td className="text-right min-w-[15rem]">
                                             {config.collection != "admins" && (
                                                 <button
                                                     onClick={() =>
                                                         handleModify(item)
                                                     }
-                                                    className="font-medium mr-10 text-blue-600 dark:text-blue-500 hover:underline"
+                                                    className="btn-ghost btn-sm mr-2"
                                                 >
                                                     Modificar
                                                 </button>
@@ -187,9 +187,10 @@ function Table({ data, refreshCallback, config, stories = false }) {
                                                 onClick={() =>
                                                     handleRemove(item)
                                                 }
-                                                className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                                                disabled={busyId === item.id}
+                                                className="btn-danger btn-sm"
                                             >
-                                                Eliminar
+                                                {busyId === item.id ? "Eliminando..." : "Eliminar"}
                                             </button>
                                         </td>
                                     </tr>
@@ -204,11 +205,12 @@ function Table({ data, refreshCallback, config, stories = false }) {
                         isOpen={{ setStoriesModalMod }}
                         add={false}
                         item={selectedItem}
+                        refresh={refresh}
                     />
                 )}
 
                 {isModalModActive && (
-                    <ModalMod
+                    <EntityForm
                         item={selectedItem}
                         closeCallback={handleModalModClose}
                         config={config}
@@ -216,14 +218,14 @@ function Table({ data, refreshCallback, config, stories = false }) {
                 )}
 
                 {isModalAddActive && (
-                    <ModalAdd
+                    <EntityForm
                         closeCallback={handleModalAddClose}
                         config={config}
                     />
                 )}
 
                 {storiesModalAdd && (
-                    <StoriesModal isOpen={{ setStoriesModalAdd }} />
+                    <StoriesModal isOpen={{ setStoriesModalAdd }} refresh={refresh} />
                 )}
             </div>
             {!data && <div className={styles.loadingBox + " " + "mx-auto"}></div>}

@@ -7,12 +7,12 @@ export const NuestraHistoria = () => {
                 <div className="flex flex-col-reverse md:flex-row md:gap-8 mx-auto w-[90%] lg:w-[75%]">
                     <div className="">
 
-                        <h1
+                        <h2
                             className="text-primaryFont font-bold mb-6 heading-1"
                             id="nuestra-historia"
                         >
                             NUESTRA HISTORIA
-                        </h1>
+                        </h2>
                         <p className="flex flex-col gap-4 font-normal par-3">
                             <span>
                                 <span className="font-bold text-primaryFont">
@@ -47,45 +47,37 @@ export const NuestraHistoria = () => {
                     <div className="w-full min-w-[250px] md:flex md:flex-col items-center pointer-events-none md:mt-20">
                         {/* Imagen grande */}
                         <Image
-                            src={
-                                "https://firebasestorage.googleapis.com/v0/b/huellitasctgna.appspot.com/o/static%2FhuellitasA.jpg?alt=media&token=10d95268-6aa8-4ecc-ba3c-3a9eeaff5daf"
-                            }
+                            src={"/assets/Fundation/image2.webp"}
                             alt="Imagen de venta de ropa"
                             className="h-auto mb-4 rounded-lg"
-                            height={700}
-                            width={700}
+                            height={600}
+                            width={800}
                         />
 
                         <div className="flex justify-between w-[100%]">
                             {/* Imágenes pequeñas */}
                             <Image
-                                src={
-                                    "https://firebasestorage.googleapis.com/v0/b/huellitasctgna.appspot.com/o/static%2FhuellitasB.jpg?alt=media&token=385cffb0-c3f3-4bed-954f-b87e5cf972d5"
-                                }
+                                src={"/assets/Fundation/image3.webp"}
                                 alt="Mujer abrazando un perro"
                                 className="w-[32%] h-auto mb-4 rounded-lg"
-                                height={700}
-                                width={700}
+                                height={600}
+                                width={600}
                             />
 
                             <Image
-                                src={
-                                    "https://firebasestorage.googleapis.com/v0/b/huellitasctgna.appspot.com/o/static%2FhuellitasC.jpg?alt=media&token=9009f1aa-87f3-40f4-8123-acc4ee5bcf5e"
-                                }
+                                src={"/assets/Fundation/image4.webp"}
                                 alt="Grupo de persona con dos perros"
                                 className="w-[32%] h-auto mb-4 rounded-lg"
-                                height={700}
-                                width={700}
+                                height={600}
+                                width={600}
                             />
 
                             <Image
-                                src={
-                                    "https://firebasestorage.googleapis.com/v0/b/huellitasctgna.appspot.com/o/static%2FhuellitasD.jpg?alt=media&token=1b6be6db-6043-4088-a6ff-6c9b6cdbe554"
-                                }
+                                src={"/assets/Fundation/image5.webp"}
                                 alt="Mujer abrazando un perro"
                                 className="w-[32%] h-auto mb-4 rounded-lg"
-                                height={700}
-                                width={700}
+                                height={600}
+                                width={600}
                             />
                         </div>
                     </div>

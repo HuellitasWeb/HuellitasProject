@@ -7,31 +7,7 @@ import {
     deleteDoc,
     getDoc,
 } from "firebase/firestore";
-import { db, storage } from "@/app/api/firebaseConfig";
-import {
-    ref,
-    uploadBytes,
-    getDownloadURL,
-    deleteObject,
-} from "firebase/storage";
-
-// Get users by email
-export async function getUserByEmail(email, pass) {
-    const res = await getRef("admins");
-
-    const admins = res.docs.map((data) => {
-        return {
-            id: data.id,
-            data: data.data(),
-        };
-    });
-
-    const userFound = admins.find((user) => {
-        return user.data.email == email && user.data.contraseña == pass;
-    });
-
-    return userFound;
-}
+import { db } from "@/app/api/firebaseConfig";
 
 // Get docs refs
 export async function getRef(collectionName) {
@@ -77,27 +53,6 @@ export async function delElement(id, collectionName) {
         console.log(e);
     }
 }
-
-// Upload an image
-export async function uploadImage(file) {
-    const storageRef = ref(storage, `images/${file.name + "_" + Date.now()}`); //Even if the image is duplicated, will be saved
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
-}
-
-// Delete an image
-export async function delImage(imageUrl) {
-    try {
-        const storageRef = ref(storage, imageUrl);
-        await deleteObject(storageRef);
-    } catch (e) {
-        console.error("Error al eliminar la imagen: ", e);
-        throw new Error("Error al eliminar la imagen");
-    }
-}
-
-export default uploadImage;
-
 
 export const getStoryById = async (id) => {
     const docRef = doc(db, 'historias', id);

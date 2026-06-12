@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 
 export default function Layout({ children }) {
     return (
-        <body >
+        <>
             <header>
                 <Navbar />
             </header>
@@ -16,6 +16,6 @@ export default function Layout({ children }) {
             <Footer />
 
             <ToastContainer />
-        </body>
+        </>
     );
 }

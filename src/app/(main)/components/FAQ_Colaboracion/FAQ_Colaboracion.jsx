@@ -26,14 +26,14 @@ let items = [
 
 function FAQ_Colaboracion() {
   return (
-    <div className=" w-full mx-auto font-[Poppins]">
+    <div className=" w-full mx-auto">
       <div className="w-full max-w-screen-2xl mx-auto h-full">
         <div className="w-[90%] lg:w-9/12 m-auto">
           <div className="text-left my-4 mt-6">
             <h2 className="text-lg text-primaryFont py-2">Colaboración</h2>
-            <h1 className="text-lg lg:text-3xl font-semibold text-primaryFont">
+            <h2 className="text-lg lg:text-3xl font-semibold text-primaryFont">
               PREGUNTAS FRECUENTES
-            </h1>
+            </h2>
           </div>
 
           <div className="flex flex-col lg:flex-row items-start">

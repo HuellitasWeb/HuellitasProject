@@ -11,10 +11,7 @@ function InputImg({ data, add }) {
    const handleImageChange = (event) => {
       const file = event.target.files[0];
       if (file) {
-         const file = event.target.files[0];
-         if (file) {
-            setSelectedImage(file);
-         }
+         setSelectedImage(file);
 
          const reader = new FileReader();
          reader.onloadend = () => {
@@ -26,7 +23,7 @@ function InputImg({ data, add }) {
 
    return (
       <section className={styles.layout}>
-         {selectedImage && (
+         {imgLocalPath && (
             <div className={styles.boxWrapper}>
                <div className={styles.wrapper}>
                   <Image
@@ -46,7 +43,7 @@ function InputImg({ data, add }) {
             {/* If add, require image, if not, it is optional. */}
             {add ? (
                <input
-                  className="block mb-2 text-sm font-medium text-[#6b6b6b]"
+                  className="block w-full text-sm text-grayFont file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primaryColor/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primaryColor hover:file:bg-primaryColor/20"
                   type="file"
                   required
                   name="image"
@@ -55,7 +52,7 @@ function InputImg({ data, add }) {
                />
             ) : (
                <input
-                  className="block mb-2 text-sm font-medium text-[#6b6b6b]"
+                  className="block w-full text-sm text-grayFont file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-primaryColor/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primaryColor hover:file:bg-primaryColor/20"
                   type="file"
                   name="image"
                   id="image"

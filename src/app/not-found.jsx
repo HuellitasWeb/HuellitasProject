@@ -4,8 +4,7 @@ import Image from 'next/image'
 function NotFound() {
     {
         return (
-            <body>
-                <main>
+            <main>
                     <section className='w-screen h-screen flex flex-col lg:flex-row max-w-screen-2xl mx-auto'>
                         <div className='flex flex-col w-full lg:w-6/12 h-[35%] lg:h-full justify-center items-center gap-4 lg:bg-primaryFont'>
                             <h1 className='text-6xl md:text-7xl font-bold text-primaryFont lg:text-white'>PÁGINA</h1>
@@ -22,8 +21,7 @@ function NotFound() {
                             <button className='primary-btn'><Link href="/">Volver al inicio</Link></button>
                         </div>
                     </section>
-                </main>
-            </body>
+            </main>
         )
     }
 }
