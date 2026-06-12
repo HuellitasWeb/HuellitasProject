@@ -84,6 +84,22 @@ body {
     @apply uppercase text-p3-m lg:text-p3-w md:text-p3-w px-4 py-4 lg:py-1 md:py-1 font-medium text-black hover:bg-gray-100 rounded-full transition-all duration-150 active:bg-gray-200;
 }
 
+/* Entrada sutil del modal de éxito de Súmate (grupos de WhatsApp) */
+@keyframes modal-pop {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-modal-pop {
+    animation: modal-pop 0.25s ease-out;
+}
+
 /* Estilos de editor de textos (Tiptap) */
 
 .tiptap h1 {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Modal from "./components/Modal";
+import GruposWhatsApp from "./components/GruposWhatsApp";
 import Slider from "../components/Slider/Slider";
 import Slider2 from "../components/Slider/slider2";
 
@@ -92,6 +93,8 @@ function Colaboracion() {
                     md={3}
                 ></Slider>
             </section>
+
+            <GruposWhatsApp />
 
             <section className="flex w-full max-w-screen-2xl mx-auto justify-center items-center bg-white lg:justify-start lg:mb-28">
                 <div className="flex flex-col w-11/12 lg:w-full gap-8 py-8">
