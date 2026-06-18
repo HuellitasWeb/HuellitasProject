@@ -25,6 +25,7 @@ export default function Navigation() {
         { href: "/dashboard", label: "HISTORIAS" },
         { href: "/dashboard/adopciones", label: "ADOPCIÓN" },
         { href: "/dashboard/sponsors", label: "SPONSORS" },
+        { href: "/dashboard/vaki", label: "VAKI" },
         ...(user?.role === "root" ? [{ href: "/dashboard/users", label: "USUARIOS" }] : []),
         { href: "/", label: "WEB" },
     ];

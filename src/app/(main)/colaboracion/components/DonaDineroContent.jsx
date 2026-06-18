@@ -5,7 +5,7 @@ import CopyButton from "./CopyButton";
 const DonaDineroContent = ({ onClose }) => {
   return (
     (
-      <div className="w-[80%] md:w-[70%] lg:w-[35%] max-h-[95%] bg-white rounded-3xl overflow-y-clip relative p-6 md:p-12 lg:p-14" role="contentInfo">
+      <div className="w-[80%] md:w-[70%] lg:w-[35%] max-h-[95%] bg-white rounded-3xl overflow-y-auto relative p-6 md:p-12 lg:p-14" role="contentInfo">
         <div className="flex flex-col items-center justify-center gap-6">
           <div className="text-center">
             <h3 className="par-1 !font-semibold">TRANSFERENCIAS</h3>
@@ -67,6 +67,12 @@ const DonaDineroContent = ({ onClose }) => {
             <div className="w-full">
               <p className="text-[11px] text-primaryFont primaryFont indent-4 text-center mx-auto">Envianos tu comprobante a <span className="font-bold">@huellitascartagena </span>para llevar cuentas organizadas</p>
             </div>
+          </div>
+
+          <div className="w-full flex flex-col items-center gap-3 bg-primaryColor rounded-2xl p-5">
+            <Image src="/assets/logos/svg/vaki-logo-white&green.svg" alt="VAKI" width={73} height={45} className="w-16" />
+            <p className="par-3 !text-white text-center">¿Prefieres donar por nuestra recolecta en VAKI?</p>
+            <a href="#vaki" onClick={onClose} className="secondary-btn !text-white !border-white w-fit">Ver recolecta activa</a>
           </div>
         </div>
         {/* 

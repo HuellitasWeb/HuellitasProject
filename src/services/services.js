@@ -54,6 +54,21 @@ export async function delElement(id, collectionName) {
     }
 }
 
+// Desactiva el flag `activo` de todos los docs de una colección salvo `exceptId`.
+// Garantiza que solo una recolecta (vaki) quede activa a la vez.
+export async function deactivateAll(collectionName, exceptId) {
+    try {
+        const items = formatData(await getRef(collectionName));
+        await Promise.all(
+            items
+                .filter((it) => it.id !== exceptId && it.data.activo)
+                .map((it) => putElement({ activo: 0 }, it.id, collectionName))
+        );
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export const getStoryById = async (id) => {
     const docRef = doc(db, 'historias', id);
     const response = await getDoc(docRef);

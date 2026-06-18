@@ -41,7 +41,8 @@ function Table({ data, refresh, config, stories = false }) {
     }
 
     async function handleRemove(item) {
-        if (!window.confirm(`¿Eliminar "${item.data.nombre}"? Esta acción no se puede deshacer.`)) {
+        const label = item.data.nombre ?? item.data.titulo ?? "este registro";
+        if (!window.confirm(`¿Eliminar "${label}"? Esta acción no se puede deshacer.`)) {
             return;
         }
 
@@ -114,8 +115,20 @@ function Table({ data, refresh, config, stories = false }) {
                                 </th>
                             )}
 
-                            {/* Fields for all pages except admins */}
-                            {config.collection != "admins" && (
+                            {/* Fields only for vaki page */}
+                            {config.collection == "vaki" && (
+                                <>
+                                    <th scope="col" className="px-6 py-3">
+                                        Enlace
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Estado
+                                    </th>
+                                </>
+                            )}
+
+                            {/* Fields for all pages except admins and vaki */}
+                            {config.collection != "admins" && config.collection != "vaki" && (
                                 <th scope="col" className="px-6 py-3">
                                     Imagen
                                 </th>
@@ -137,7 +150,7 @@ function Table({ data, refresh, config, stories = false }) {
                                             scope="row"
                                             className="font-medium text-primaryFont whitespace-nowrap"
                                         >
-                                            {item.data.nombre}
+                                            {item.data.nombre ?? item.data.titulo}
                                         </th>
 
                                         {/* Fields only for admins page */}
@@ -161,8 +174,36 @@ function Table({ data, refresh, config, stories = false }) {
                                             </td>
                                         )}
 
-                                        {/* Fields for all pages except admins */}
-                                        {config.collection != "admins" && (
+                                        {/* Fields only for vaki page */}
+                                        {config.collection == "vaki" && (
+                                            <>
+                                                <td className="max-w-60 overflow-auto">
+                                                    <a
+                                                        href={item.data.enlace}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-primaryColor underline break-all"
+                                                    >
+                                                        {item.data.enlace}
+                                                    </a>
+                                                </td>
+                                                <td className="whitespace-nowrap">
+                                                    <span
+                                                        className={
+                                                            "inline-flex rounded-full px-3 py-1 text-xs font-medium " +
+                                                            (item.data.activo
+                                                                ? "bg-green-100 text-green-700"
+                                                                : "bg-gray-100 text-gray-600")
+                                                        }
+                                                    >
+                                                        {item.data.activo ? "Activa" : "Inactiva"}
+                                                    </span>
+                                                </td>
+                                            </>
+                                        )}
+
+                                        {/* Fields for all pages except admins and vaki */}
+                                        {config.collection != "admins" && config.collection != "vaki" && (
                                             <td className="min-w-[10rem]">
                                                 <img
                                                     className="h-24 w-24 object-cover rounded-lg"
