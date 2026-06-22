@@ -3,6 +3,25 @@ import { rateLimit, getClientIp } from '@/lib/rateLimit';
 
 export const runtime = 'nodejs';
 
+// Rate limit en memoria por IP: 3 envíos por hora.
+const RATE_LIMIT = 3;
+const RATE_WINDOW_MS = 60 * 60 * 1000;
+const hitsByIp = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const recentHits = (hitsByIp.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+
+  if (recentHits.length >= RATE_LIMIT) {
+    hitsByIp.set(ip, recentHits);
+    return true;
+  }
+
+  recentHits.push(now);
+  hitsByIp.set(ip, recentHits);
+  return false;
+}
+
 export async function POST(req) {
   try {
     const ip = getClientIp(req);
