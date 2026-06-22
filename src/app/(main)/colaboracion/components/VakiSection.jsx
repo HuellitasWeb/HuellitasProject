@@ -3,6 +3,15 @@
 import Image from "next/image";
 import useCollection from "@/hooks/useCollection";
 
+// La clienta puede guardar el enlace con o sin protocolo (https://vaki.co/…,
+// www.vaki.co/… o vaki.co/…). Sin protocolo, el navegador lo trata como ruta
+// relativa (p.ej. /www.vaki.co). Le anteponemos https:// para forzar URL absoluta.
+function normalizeUrl(url) {
+    const trimmed = (url ?? "").trim();
+    if (!trimmed) return "";
+    return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+}
+
 function VakiCard({ children }) {
     return (
         <article className="relative overflow-hidden flex flex-col gap-4 bg-primaryColor rounded-3xl py-8 px-6 lg:px-10">
@@ -59,7 +68,7 @@ function VakiSection() {
                             {activa.data.descripcion}
                         </p>
                         <a
-                            href={activa.data.enlace}
+                            href={normalizeUrl(activa.data.enlace)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="relative z-10 w-fit mt-2 uppercase text-p3-m lg:text-p3-w font-medium text-white bg-vakiGreen hover:bg-[#7ab536] rounded-full px-6 py-2.5 shadow-md transition-all duration-150"
