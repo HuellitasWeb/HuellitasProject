@@ -29,6 +29,12 @@ const FIELDS = {
         { name: "email", label: "Email", type: "email", required: "El email es obligatorio" },
         { name: "password", label: "Contraseña", type: "password", required: "La contraseña es obligatoria", addOnly: true },
     ],
+    vaki: [
+        { name: "titulo", label: "Título", type: "text", required: "El título es obligatorio" },
+        { name: "descripcion", label: "Descripción", type: "textarea", required: "La descripción es obligatoria" },
+        { name: "enlace", label: "Enlace de la vaca (VAKI)", type: "text", required: "El enlace es obligatorio" },
+        { name: "activo", label: "Estado", type: "select", options: [{ value: 1, label: "Activa" }, { value: 0, label: "Inactiva" }] },
+    ],
 };
 
 // Formulario único de alta/edición para adopciones, sponsors y admins.
@@ -37,7 +43,7 @@ function EntityForm({ item = null, closeCallback, config }) {
     const isEdit = Boolean(item);
     const collection = config.collection;
     const fields = FIELDS[collection] ?? [];
-    const withImage = collection !== "admins";
+    const withImage = collection !== "admins" && collection !== "vaki";
 
     const [selectedImage, setSelectedImage] = useState(null);
 

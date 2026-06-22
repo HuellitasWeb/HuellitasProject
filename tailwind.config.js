@@ -37,6 +37,7 @@ module.exports = {
         "activeButton": "#FF5490",
         "primaryFont": "#22202A",
         "grayFont": "#6B6B6B",
+        "vakiGreen": "#8CC640",
 
       },
       screens: {

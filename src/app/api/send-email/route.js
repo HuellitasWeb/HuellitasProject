@@ -1,4 +1,7 @@
-import nodemailer from 'nodemailer';
+import { sendMail } from '@/services/mailer';
+import { rateLimit, getClientIp } from '@/lib/rateLimit';
+
+export const runtime = 'nodejs';
 
 // Rate limit en memoria por IP: 3 envíos por hora.
 const RATE_LIMIT = 3;
@@ -21,29 +24,18 @@ function isRateLimited(ip) {
 
 export async function POST(req) {
   try {
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
-    if (isRateLimited(ip)) {
+    const ip = getClientIp(req);
+    if (rateLimit(`email:${ip}`, { limit: 3, windowMs: 60 * 60 * 1000 })) {
       return new Response(JSON.stringify({ message: 'Too many requests' }), { status: 429 });
     }
 
-    const { name, phone, email, comment='', subject} = await req.json();
+    const { name, phone, email, comment = '', subject } = await req.json();
 
-    let transporter = nodemailer.createTransport({
-      service: 'gmail', 
-      auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS, 
-      },
+    await sendMail({
+      to: 'huellitasctgna@outlook.com',
+      subject: `Web Huellitas - ${subject}`,
+      text: `Nombre: ${name}\nTeléfono: ${phone}\nCorreo electrónico: ${email}\nConsulta: ${comment}`,
     });
-
-    let mailOptions = {
-      from: process.env.EMAIL_USER, 
-      to: 'huellitasctgna@outlook.com', 
-      subject: `Web Huellitas - ${subject}`, 
-      text: `Nombre: ${name}\nTeléfono: ${phone}\nCorreo electrónico: ${email}\nConsulta: ${comment}`, 
-    };
-
-    await transporter.sendMail(mailOptions);
 
     return new Response(JSON.stringify({ message: 'Email sent successfully' }), { status: 200 });
   } catch (error) {

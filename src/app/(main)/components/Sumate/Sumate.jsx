@@ -1,6 +1,12 @@
 "use client";
 import React, { useState } from 'react';
 import { successMessage, errorMessage } from '@/services/notify';
+import WhatsAppSuccessModal from './WhatsAppSuccessModal';
+
+const SUBJECT_TO_GROUP = {
+    'Quiero ser voluntario': 'voluntarios',
+    'Quiero ser padrino': 'padrinos',
+};
 
 function Sumate() {
     const [email, setEmail] = useState("");
@@ -8,6 +14,7 @@ function Sumate() {
     const [phone, setPhone] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [subject, setSubject] = useState('');
+    const [successGroup, setSuccessGroup] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,6 +36,7 @@ function Sumate() {
 
                 if (response.ok) {
                     successMessage("Correo enviado con éxito!")
+                    setSuccessGroup(SUBJECT_TO_GROUP[subject] ?? null);
 
                     setEmail('');
                     setName('');
@@ -108,6 +116,8 @@ function Sumate() {
                     </div>
                 </div>
             </div>
+
+            <WhatsAppSuccessModal group={successGroup} onClose={() => setSuccessGroup(null)} />
         </section>
     );
 }
